@@ -1,0 +1,17 @@
+//generate go code with protoc --go_out=plugins=micro:. name.proto
+syntax = "proto3";
+
+package name;
+
+service Name {
+    rpc Random(Request) returns (Response) {};
+}
+
+message Request{}
+//Response example {"name":"Δαμέας","surname":"Γιάνναρης","gender":"male","region":"Greece"}
+message Response{
+    string name = 1;
+    string surname = 2;
+    string gender = 3;
+    string region = 4;
+}
