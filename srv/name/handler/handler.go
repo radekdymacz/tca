@@ -26,12 +26,12 @@ func (n *Namer) Random(ctx context.Context, req *proto.Request, rsp *proto.Respo
 	}
 	ureq.Header.Set("Content-Type", "application/json")
 	ures, err := client.Do(ureq)
-	//defer freeing up the client
-	defer ures.Body.Close()
+
 	if err != nil {
 		return err
 	}
-
+	//defer freeing up the client
+	defer ures.Body.Close()
 	body, err := ioutil.ReadAll(ures.Body)
 	if err != nil {
 		return err

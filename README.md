@@ -59,6 +59,7 @@ or
 - [x] Implement external services calls
 - [x] basic unit tests 
 - [ ] Add test cases
+- [ ] Cleanup the code
 - [ ] Benchmarks
 - [ ] Dependencies mgmt
 - [ ] Circle config

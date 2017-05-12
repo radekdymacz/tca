@@ -42,11 +42,11 @@ func (j *Joker) ChuckNorris(ctx context.Context, req *proto.Request, rsp *proto.
 	}
 	ureq.Header.Set("Accept", "text/html")
 	jokeRes, err := client.Do(ureq)
-	//free up client
-	defer jokeRes.Body.Close()
 	if err != nil {
 		return err
 	}
+	//free up client
+	defer jokeRes.Body.Close()
 	body, err := ioutil.ReadAll(jokeRes.Body)
 	if err != nil {
 		return err
