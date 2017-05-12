@@ -12,7 +12,7 @@ import (
 	context "golang.org/x/net/context"
 )
 
-//Joker struct implements handler interface
+//Namer struct implements handler interface
 type Namer struct{}
 
 //Random name from http://uinames.com/api/
