@@ -15,6 +15,8 @@ API to fetch random name and joke and combining two together using go-micro.
 
 ## Instalation
 
+Just tested on Mac
+
 ```
 $ go get-u github.com/radekdymacz/tca
 $ cd $GOPATH/src/github.com/radekdymacz/tca
