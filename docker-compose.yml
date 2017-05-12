@@ -1,4 +1,4 @@
-consul:
+registry:
     command: -server -bootstrap -ui-dir /ui
     image: progrium/consul:latest
     hostname: registry
@@ -8,26 +8,31 @@ consul:
         - "8500:8500"
         - "8600:53/udp"
 micro:
-    command: --registry_address=registry:8500 --api_handler=rpc api
+    command: --registry_address=registry:8500 api
     image: microhq/micro:latest
     links:
-        - consul
+        - registry
     ports:
         - "8080:8080"
 web:
     command: --registry_address=registry:8500 --register_interval=5 --register_ttl=10 web
     image: microhq/micro:latest
     links:
-      - consul
+      - registry
     ports:
     - "8082:8082"
 joke:
     image: radekdymacz/joke-srv:latest
     command: --registry_address=registry:8500
     links:
-        - consul
+        - registry
 name:
     image: radekdymacz/name-srv:latest
     command: --registry_address=registry:8500
     links:
-        - consul
+        - registry
+api:
+    image: radekdymacz/api-srv:latest
+    command: --registry_address=registry:8500
+    links:
+        - registry   

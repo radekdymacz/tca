@@ -1,7 +1,14 @@
 package handler
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"log"
+	"net/http"
+	"net/url"
+
+	"io/ioutil"
 
 	proto "github.com/radekdymacz/tca/srv/joke/proto"
 	context "golang.org/x/net/context"
@@ -22,18 +29,35 @@ func (j *Joker) ChuckNorris(ctx context.Context, req *proto.Request, rsp *proto.
 	if req.LimitTo == "" {
 		req.LimitTo = "nerdy"
 	}
+	//construct url
 
-	//TODO remove test data and implement calling the service
+	url := fmt.Sprintf("http://api.icndb.com/jokes/random?firstName=%s&lastName=%s&limitTo=%s", url.QueryEscape(req.GetFirstName()), url.QueryEscape(req.GetLastName()), url.QueryEscape(req.GetLimitTo()))
 
-	s := make([]string, 1)
-	s[0] = "test"
-	rsp.Type = "test"
-	rsp.Value = &proto.ChuckNorrisJoke{
-		Id:         1,
-		Joke:       "hello",
-		Categories: s,
+	// calling the service
+	//jokeRes, err := http.Get(url)
+	client := &http.Client{}
+	ureq, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+	ureq.Header.Set("Accept", "text/html")
+	jokeRes, err := client.Do(ureq)
+	//free up client
+	defer jokeRes.Body.Close()
+	if err != nil {
+		return err
+	}
+	body, err := ioutil.ReadAll(jokeRes.Body)
+	if err != nil {
+		return err
 	}
 
-	log.Printf("Value: %v", rsp.String())
+	err = json.Unmarshal(body, rsp)
+	if err != nil {
+		return errors.New("Marshalling err")
+	}
+
+	log.Printf("Response: %s", rsp.String())
+
 	return nil
 }

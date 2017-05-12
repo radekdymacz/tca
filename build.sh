@@ -13,7 +13,7 @@ echo "Building ./srv/name"
 make build
 popd > /dev/null
 
-# echo "Building ./api"
-# pushd $dir/api > /dev/null
-# CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-w'
-# popd > /dev/null
+echo "Building ./api"
+pushd $dir/api > /dev/null
+make build
+popd > /dev/null
